@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyq62uy5p8pog"]
+
+[sub_resource type="GDScript" id="GDScript_gv6xp"]
+script/source = "extends MarginContainer
+
+const MAIN_SCENE := \"res://scenes/test_room.tscn\"
+
+var loading: bool = true
+var progress: Array[float] = []
+var status: ResourceLoader.ThreadLoadStatus
+
+@onready var tree := get_tree()
+@onready var progressbar := $VBoxContainer/ProgressBar
+
+func _ready() -> void:
+	ResourceLoader.load_threaded_request(MAIN_SCENE)
+
+func _process(_delta: float) -> void:
+	if loading:
+		status = ResourceLoader.load_threaded_get_status(MAIN_SCENE, progress)
+
+		match status:
+			ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+				progressbar.value = progress[0] * 100.0
+
+			ResourceLoader.THREAD_LOAD_FAILED:
+				loading = false
+
+			ResourceLoader.THREAD_LOAD_LOADED:
+				loading = false
+				progressbar.value = 100.0
+				tree.change_scene_to_packed(
+					ResourceLoader.load_threaded_get(MAIN_SCENE)
+				)
+"
+
+[node name="Intro" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+script = SubResource("GDScript_gv6xp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1

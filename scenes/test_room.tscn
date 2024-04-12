@@ -1,0 +1,234 @@
+[gd_scene load_steps=26 format=3 uid="uid://c54ajaqrjvcf6"]
+
+[ext_resource type="Texture2D" uid="uid://c35tujp11tud3" path="res://assets/alpha/green.png" id="1_chewi"]
+[ext_resource type="Texture2D" uid="uid://3clvu4pchtbs" path="res://assets/alpha/red.png" id="1_qu35v"]
+[ext_resource type="Texture2D" uid="uid://beol2fvj7uedc" path="res://assets/alpha/orange.png" id="2_674wg"]
+[ext_resource type="Texture2D" uid="uid://d4l15o55trxt" path="res://assets/alpha/purple.png" id="3_gghco"]
+[ext_resource type="Texture2D" uid="uid://1w14pya2iscx" path="res://assets/alpha/dark.png" id="4_bx52n"]
+[ext_resource type="Texture2D" uid="uid://brmeljgkh2sp3" path="res://assets/alpha/light.png" id="6_txkr5"]
+
+[sub_resource type="GDScript" id="GDScript_pnbra"]
+script/source = "extends Node3D
+
+const ROTATION_AMOUNT := 90.0
+const LIGHT_AMOUNT := 30.0 
+
+@onready var pivot := $Pivot
+@onready var light := $DirectionalLight3D
+
+func _process(delta: float) -> void:
+	light.rotation_degrees.x += LIGHT_AMOUNT * delta
+	pivot.rotation_degrees.y += ROTATION_AMOUNT * delta
+"
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jpvsn"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ik71v"]
+sky_material = SubResource("ProceduralSkyMaterial_jpvsn")
+
+[sub_resource type="Environment" id="Environment_3rmom"]
+background_mode = 2
+sky = SubResource("Sky_ik71v")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esfdn"]
+albedo_texture = ExtResource("1_chewi")
+metallic = 0.1
+roughness = 0.0
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_nv3ot"]
+material = SubResource("StandardMaterial3D_esfdn")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_npfti"]
+albedo_texture = ExtResource("2_674wg")
+metallic = 0.1
+roughness = 0.0
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_51sp2"]
+material = SubResource("StandardMaterial3D_npfti")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xlahf"]
+albedo_texture = ExtResource("3_gghco")
+metallic = 0.1
+roughness = 0.0
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_4aewa"]
+material = SubResource("StandardMaterial3D_xlahf")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qad3c"]
+albedo_texture = ExtResource("4_bx52n")
+metallic = 0.1
+roughness = 0.0
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_sriiq"]
+material = SubResource("StandardMaterial3D_qad3c")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y8six"]
+material = SubResource("StandardMaterial3D_npfti")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xnvco"]
+material = SubResource("StandardMaterial3D_xlahf")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wmuxc"]
+albedo_texture = ExtResource("1_qu35v")
+metallic = 0.1
+roughness = 0.0
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_pf15r"]
+material = SubResource("StandardMaterial3D_wmuxc")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2t4tk"]
+material = SubResource("StandardMaterial3D_qad3c")
+size = Vector3(10, 1, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jgtah"]
+albedo_texture = ExtResource("6_txkr5")
+metallic = 1.0
+roughness = 0.5
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_j3uk5"]
+material = SubResource("StandardMaterial3D_jgtah")
+radius = 500.0
+height = 1000.0
+
+[node name="TestRoom" type="Node3D"]
+script = SubResource("GDScript_pnbra")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3rmom")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866026, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+far = 100.0
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="Mesh1" type="MeshInstance3D" parent="Objects"]
+mesh = SubResource("BoxMesh_nv3ot")
+skeleton = NodePath("../..")
+
+[node name="Mesh2" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, 4)
+mesh = SubResource("BoxMesh_51sp2")
+skeleton = NodePath("../..")
+
+[node name="Mesh3" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 4.25886, 5.82489)
+mesh = SubResource("BoxMesh_4aewa")
+skeleton = NodePath("../..")
+
+[node name="Mesh19" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 4.25886, 5.82489)
+mesh = SubResource("BoxMesh_4aewa")
+skeleton = NodePath("../..")
+
+[node name="Mesh20" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 4.25886, 5.82489)
+mesh = SubResource("BoxMesh_4aewa")
+skeleton = NodePath("../..")
+
+[node name="Mesh4" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 9, -9)
+mesh = SubResource("BoxMesh_sriiq")
+skeleton = NodePath("../..")
+
+[node name="Mesh5" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4, -9)
+mesh = SubResource("BoxMesh_y8six")
+skeleton = NodePath("../..")
+
+[node name="Mesh6" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 7, 0)
+mesh = SubResource("BoxMesh_xnvco")
+skeleton = NodePath("../..")
+
+[node name="Mesh7" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 7, 0)
+mesh = SubResource("BoxMesh_nv3ot")
+skeleton = NodePath("../..")
+
+[node name="Mesh8" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -1, -15)
+mesh = SubResource("BoxMesh_pf15r")
+skeleton = NodePath("../..")
+
+[node name="Mesh9" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 4, -24)
+mesh = SubResource("BoxMesh_2t4tk")
+skeleton = NodePath("../..")
+
+[node name="Mesh10" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, -24)
+mesh = SubResource("BoxMesh_pf15r")
+skeleton = NodePath("../..")
+
+[node name="Mesh11" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -18)
+mesh = SubResource("BoxMesh_nv3ot")
+skeleton = NodePath("../..")
+
+[node name="Mesh12" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 6, -18)
+mesh = SubResource("BoxMesh_pf15r")
+skeleton = NodePath("../..")
+
+[node name="Mesh13" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 6, 14)
+mesh = SubResource("BoxMesh_2t4tk")
+skeleton = NodePath("../..")
+
+[node name="Mesh14" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 9, 12)
+mesh = SubResource("BoxMesh_pf15r")
+skeleton = NodePath("../..")
+
+[node name="Mesh17" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1, 20)
+mesh = SubResource("BoxMesh_4aewa")
+skeleton = NodePath("../..")
+
+[node name="Mesh18" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3, 20)
+mesh = SubResource("BoxMesh_51sp2")
+skeleton = NodePath("../..")
+
+[node name="Mesh15" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, 12)
+mesh = SubResource("BoxMesh_2t4tk")
+skeleton = NodePath("../..")
+
+[node name="Mesh16" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 7, 12)
+mesh = SubResource("BoxMesh_pf15r")
+skeleton = NodePath("../..")
+
+[node name="SphereMesh" type="MeshInstance3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -518.396, 0)
+mesh = SubResource("SphereMesh_j3uk5")

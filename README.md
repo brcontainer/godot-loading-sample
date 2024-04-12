@@ -1,3 +1,1 @@
-<video width="320" height="240" controls>
-  <source src="android-sample.mp4" type="video/mp4">
-</video>
+- [android-sample.mp4](android-sample.mp4)
